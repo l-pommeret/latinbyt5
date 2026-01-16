@@ -1,0 +1,7 @@
+torch
+transformers
+datasets
+accelerate
+protobuf
+# For monitoring, optional
+wandb
