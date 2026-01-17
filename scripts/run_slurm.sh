@@ -14,7 +14,7 @@
 # module load python/3.10
 
 # Activate virtual environment
-# source venv/bin/activate
+source .venv/bin/activate
 
 # Echo info
 echo "Date: $(date)"
