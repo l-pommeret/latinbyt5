@@ -15,7 +15,8 @@ cd ~/propositions_atomiques/pommeret/latinbyt5
 echo "Installing uv..."
 # Install uv locally (doesn't need root, works on old glibc)
 curl -LsSf https://astral.sh/uv/install.sh | sh
-source $HOME/.cargo/env
+# Add local bin to path (default install location)
+export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
 
 echo "Creating virtual environment with Python 3.12..."
 # uv automatically downloads a standalone python if needed
