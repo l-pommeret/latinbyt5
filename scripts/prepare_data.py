@@ -4,8 +4,14 @@ import os
 
 def prepare_data(output_dir, subset_size=None):
     print(f"Loading PleIAs/Latin-PD dataset...")
-    # Load the dataset in streaming mode to handle large size
-    dataset = load_dataset("PleIAs/Latin-PD", split="train", streaming=True)
+    try:
+        # Try standard loading first
+        dataset = load_dataset("PleIAs/Latin-PD", split="train", streaming=True)
+    except Exception as e:
+        print(f"Standard loading failed ({e}). Trying raw parquet mode...")
+        # Fallback to ignoring metadata and loading parquet directly
+        # We guess the path is data/*.parquet based on standard HF structure
+        dataset = load_dataset("parquet", data_files="https://huggingface.co/datasets/PleIAs/Latin-PD/resolve/main/data/*.parquet", split="train", streaming=True)
     
     print("Dataset loaded. Inspecting first few examples...")
     # Peek at first few examples
