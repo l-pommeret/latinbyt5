@@ -4,9 +4,16 @@ import os
 
 def prepare_data(output_dir, subset_size=None):
     print(f"Loading PleIAs/Latin-PD dataset...")
-    # Direct parquet loading to bypass metadata schema mismatch
-    # The dataset metadata claims 'identifier' but files have 'file_id'
-    dataset = load_dataset("parquet", data_files="https://huggingface.co/datasets/PleIAs/Latin-PD/resolve/main/data/*.parquet", split="train", streaming=True)
+    # Direct parquet loading with explicit file resolution
+    from huggingface_hub import HfFileSystem
+    fs = HfFileSystem()
+    # Resolve all parquet files in the data directory
+    files = fs.glob("datasets/PleIAs/Latin-PD/data/*.parquet")
+    # Convert to full URLs
+    data_files = [f"https://huggingface.co/{f}" for f in files]
+    print(f"Found {len(data_files)} parquet files: {data_files}")
+    
+    dataset = load_dataset("parquet", data_files=data_files, split="train", streaming=True)
     
     print("Dataset loaded. Inspecting first few examples...")
     # Peek at first few examples
