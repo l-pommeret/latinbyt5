@@ -9,8 +9,8 @@ def prepare_data(output_dir, subset_size=None):
     fs = HfFileSystem()
     # Resolve all parquet files in the root directory
     files = fs.glob("datasets/PleIAs/Latin-PD/*.parquet")
-    # Convert to full URLs
-    data_files = [f"https://huggingface.co/{f}" for f in files]
+    # Convert to full URLs pointing to raw LFS content
+    data_files = [f"https://huggingface.co/datasets/PleIAs/Latin-PD/resolve/main/{os.path.basename(f)}" for f in files]
     print(f"Found {len(data_files)} parquet files: {data_files}")
     
     dataset = load_dataset("parquet", data_files=data_files, split="train", streaming=True)
